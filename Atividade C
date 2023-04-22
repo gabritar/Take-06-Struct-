@@ -1,0 +1,52 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_PROJETOS 100
+
+typedef struct {
+    int numero;
+    float saldo;
+} Projeto;
+
+int main() {
+    Projeto projetos[MAX_PROJETOS];
+    int num_projetos = 0;
+    char tipo_despesa;
+    int num_projeto;
+    float valor;
+
+    printf("Digite as informações (projeto, valor, tipo despesa):\n");
+
+    while (scanf("%d %f %c", &num_projeto, &valor, &tipo_despesa) == 3) {
+        int projeto_existente = 0;
+
+        for (int i = 0; i < num_projetos; i++) {
+            if (projetos[i].numero == num_projeto) {
+                if (tipo_despesa == 'R') {
+                    projetos[i].saldo += valor;
+                } else {
+                    projetos[i].saldo -= valor;
+                }
+                projeto_existente = 1;
+                break;
+            }
+        }
+
+        if (!projeto_existente) {
+            Projeto novo_projeto;
+            novo_projeto.numero = num_projeto;
+            novo_projeto.saldo = (tipo_despesa == 'R') ? valor : -valor;
+            projetos[num_projetos] = novo_projeto;
+            num_projetos++;
+        }
+    }
+
+    printf("\nSaldo final de cada projeto:\n");
+
+    for (int i = 0; i < num_projetos; i++) {
+        printf("Projeto %d: %.2f\n", projetos[i].numero, projetos[i].saldo);
+    }
+
+    return 0;
+
+}
